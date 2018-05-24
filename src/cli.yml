@@ -1,0 +1,39 @@
+name: rcomm
+version: "0.1.0"
+author: "Alan K <afksavish@gmail.com>"
+about: "A Rust version of the GNU core util `comm`"
+
+args:
+    - col1:
+        help: Suppress printing of column 1.
+        short: "1"
+        multiple: false
+        takes_value: false
+
+    - col2:
+        help: Suppress printing of column 2.
+        short: "2"
+        multiple: false
+        takes_value: false
+
+    - col3:
+        help: Suppress printing of column 3.
+        short: "3"
+        multiple: false
+        takes_value: false
+
+    - ignore_case:
+        help: Case insensitive comparison of lines.
+        short: "i"
+        multiple: false
+        takes_value: false
+
+    - file1:
+        help: The first file.
+        index: 1
+        required: true
+        
+    - file2:
+        help: The second file.
+        index: 2
+        required: true
