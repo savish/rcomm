@@ -3,7 +3,7 @@ extern crate clap;
 use clap::App;
 use std::fs::File;
 use std::io::prelude::*;
-use std::io::{self, BufReader};
+use std::io::{self, BufReader, Write};
 
 #[derive(Debug)]
 struct Row<'a> {
@@ -59,11 +59,14 @@ fn main() -> io::Result<()> {
     let mut line1 = file1_reader.next().unwrap_or(Ok("".to_string())).unwrap();
     let mut line2 = file2_reader.next().unwrap_or(Ok("".to_string())).unwrap();
 
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+
     while !line1.is_empty() && !line2.is_empty() {
         let line1_ref = &(line1.clone());
         let line2_ref = &(line2.clone());
         let row = generate_row(line1_ref, line2_ref, matches.is_present("ignore_case"));
-        println!("{}", display_row(&row));
+        writeln!(handle, "{}", display_row(&row))?;
 
         line1 = match row.column {
             0 | 2 => file1_reader.next().unwrap_or(Ok("".to_string())).unwrap(),
@@ -77,42 +80,46 @@ fn main() -> io::Result<()> {
     }
 
     if !line1.is_empty() {
-        println!(
+        writeln!(
+            handle,
             "{}",
             display_row(&Row {
                 text: &line1,
                 column: 0
             })
-        );
+        )?;
 
         while let Some(val) = file1_reader.next() {
-            println!(
+            writeln!(
+                handle,
                 "{}",
                 display_row(&Row {
                     text: &(val.unwrap()),
                     column: 0
                 })
-            );
+            )?;
         }
     }
 
     if !line2.is_empty() {
-        println!(
+        writeln!(
+            handle,
             "{}",
             display_row(&Row {
                 text: &line2,
                 column: 1
             })
-        );
+        )?;
 
         while let Some(val) = file2_reader.next() {
-            println!(
+            writeln!(
+                handle,
                 "{}",
                 display_row(&Row {
                     text: &(val.unwrap()),
                     column: 1
                 })
-            );
+            )?;
         }
     }
 
