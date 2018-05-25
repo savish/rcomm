@@ -128,10 +128,10 @@ fn main() -> io::Result<()> {
 
     let files_lines = CommFiles::new(BufReader::new(file1).lines(), BufReader::new(file2).lines());
     let stdout = io::stdout();
-    let handle = stdout.lock();
+    let mut handle = stdout.lock();
 
     for lines in files_lines {
-        writeln!(handle, "{}", display_line(lines))
+        writeln!(handle, "{}", display_line(lines))?;
     }
 
     Ok(())
