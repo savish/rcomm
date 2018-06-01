@@ -3,6 +3,9 @@ version: "0.1.0"
 author: "Alan K <afksavish@gmail.com>"
 about: "A Rust version of the GNU core util `comm`"
 
+settings:
+    - ColoredHelp
+
 args:
     - col1:
         help: Suppress printing of column 1.
